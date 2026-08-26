@@ -742,5 +742,18 @@ RNode runPreselection(RNode df_, std::string channel, bool noCut, bool isData)
 
     }
 
+    // zzz
+    else if (channel == "zzz"){
+
+        df = TriggerSelections(df,trigger_logic_string_multilep);
+        Cutflow::Add(df, "C1: Trigger selection");
+
+        df = lepSFWrapper(df, isData, /*ele_sf_name=*/ "_weight_electron_reco_looseid", /*muo_sf_name=*/ "_weight_muon_looseid_looseiso");
+
+        // Channel orthogonality selection
+        df = df.Filter("((nElectron_Veto + nMuon_Loose) >= 4)", "C2: 4lep");
+
+    }
+
     return df;
 }

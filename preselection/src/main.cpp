@@ -109,6 +109,7 @@ int main(int argc, char** argv) {
         "2lep_2FJ",
         "3lep",
         "4lep",
+        "zzz",
     };
     if (std::find(channels.begin(), channels.end(), args.ana) == channels.end()) {
         if (!args.makeSpanetTrainingdata) {

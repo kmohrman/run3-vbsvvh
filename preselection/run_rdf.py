@@ -19,6 +19,7 @@ ANA_CHANNELS = {
         "2lep_2FJ"     : "2lep_2FJ",
         "3lep"         : "3lep",
         "4lep"         : "4lep",
+        "zzz"          : "4lep",
 }
 # MET-trigger subsets may have their own efficiency payloads.  They remain
 # excluded from final channel merging by the b-tag YAML, but are valid raw
