@@ -68,7 +68,11 @@ for RUN in 2 3; do
 
     # One submission per tier, so --systs reaches signal without reaching background.
     # All three share -n, so the output layout is unchanged.
-    python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "${CHANNELS[@]}" -m $MODE -r $RUN -f 1 --kinds sig $SYSTS
-    python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "${CHANNELS[@]}" -m $MODE -r $RUN -f 1 --kinds data
-    python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "${CHANNELS[@]}" -m $MODE -r $RUN -f 1 --kinds bkg
+    #python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "${CHANNELS[@]}" -m $MODE -r $RUN -f 1 --kinds sig $SYSTS
+    #python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "${CHANNELS[@]}" -m $MODE -r $RUN -f 1 --kinds data
+    #python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "${CHANNELS[@]}" -m $MODE -r $RUN -f 1 --kinds bkg
+
+    # For ZZZ
+    python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "zzz" -m $MODE -r $RUN -f 2 --kinds bkg data
+
 done
