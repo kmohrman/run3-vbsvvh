@@ -30,6 +30,8 @@ xsec_dict = {
 
             # From XSDB
 
+            "ZH-Hto2Z_Fil-4L_Par-M-125_TuneCP5_13p6TeV": 0.00320, # TBC
+
             "DYto2E_Bin-MLL-10to50_TuneCP5_13p6TeV": 6744.0,
             "DYto2Mu_Bin-MLL-10to50_TuneCP5_13p6TeV": 6744.0,
             "DYto2Tau_Bin-MLL-10to50_TuneCP5_13p6TeV": 6744.0,
@@ -193,7 +195,7 @@ xsec_dict = {
             "ZZto2L2Nu_TuneCP5_13p6TeV" : 1.031,
             "ZZto2L2Q_TuneCP5_13p6TeV" : 6.788,
             "ZZto2Nu2Q_TuneCP5_13p6TeV" : 4.826,
-            "ZZto4L_TuneCP5_13p6TeV" : 1.39,
+            "ZZto4L_TuneCP5_13p6TeV" : 1.529, # This is 1.39 (from HIG-25-015) * 1.1 k factor
             "ZZto4Q-1Jets_TuneCP5_13p6TeV" : 7.832,
             "ZZ_TuneCP5_13p6TeV" : 12.75, # XSDB Also quotes 12.85
             "ZZZ-5F_TuneCP5_13p6TeV" : 0.01591,
@@ -388,6 +390,9 @@ xsec_dict = {
             "DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV" : 0.5683,
             "DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV": 0.1333,
             "DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV" : 0.002987,
+
+            # From HIG-21-009 (1.1 k factor applied)
+            "ZZTo4L_TuneCP5_13TeV" : 1.3816,
 
 
         }
