@@ -28,9 +28,11 @@ xsec_dict = {
 
         "bkg" : {
 
-            # From XSDB
+            # qq ZH from https://gitlab.cern.ch/LHCHIGGSXS/LHCHXSWG1/crosssections/-/tree/master/R5?ref_type=heads
+            # With H->ZZ BR of 0.0264, and nlep>=4 filter eff of 3*0.101*0.101*(1-0.101) + 0.101**3
+            "ZH-Hto2Z_Fil-4L_Par-M-125_TuneCP5_13p6TeV": 0.000616,
 
-            "ZH-Hto2Z_Fil-4L_Par-M-125_TuneCP5_13p6TeV": 0.00320, # TBC
+            # From XSDB
 
             "DYto2E_Bin-MLL-10to50_TuneCP5_13p6TeV": 6744.0,
             "DYto2Mu_Bin-MLL-10to50_TuneCP5_13p6TeV": 6744.0,

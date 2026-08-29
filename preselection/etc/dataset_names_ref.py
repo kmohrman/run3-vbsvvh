@@ -661,6 +661,7 @@ datasets = {
         {"year": "2024Prompt", "dataset_name": "ZZto4Q-1Jets_TuneCP5_13p6TeV_amcatnloFXFX-pythia8_RunIII2024Summer24NanoAODv15-150X_mcRun3_2024_realistic_v2-v2_NANOAODSIM"},
         {"year": "2024Prompt", "dataset_name": "ZZ_TuneCP5_13p6TeV_pythia8_RunIII2024Summer24NanoAODv15-150X_mcRun3_2024_realistic_v2-v2_NANOAODSIM"},
         {"year": "2024Prompt", "dataset_name": "ZZZ-5F_TuneCP5_13p6TeV_amcatnlo-pythia8_RunIII2024Summer24NanoAODv15-150X_mcRun3_2024_realistic_v2-v2_NANOAODSIM"},
+        {"year": "2024Prompt", "dataset_name": "ZH-Hto2Z_Fil-4L_Par-M-125_TuneCP5_13p6TeV_powhegMINLO-jhugen-pythia8_RunIII2024Summer24NanoAODv15-150X_mcRun3_2024_realistic_v2-v2_NANOAODSIM"},
     ],
 
 
