@@ -124,20 +124,9 @@ def match_xsec(dataset_name,xsec_dict):
     return [dataset_name_short,dataset_xsec]
 
 
-# Get sum of weights for files in a list
-# File list should be full path
-def get_sow(list_of_files):
-    sumw_tot = 0
-    for filepath in list_of_files:
-        with uproot.open(filepath) as f:
-            sumw = sum(f["Runs"]["genEventSumw"].array())
-            sumw_tot = sumw_tot + sumw
-    return(sumw_tot)
-
-
 # Strip everything before the a given string in all paths in a list
 # Assumes all paths are the same up to the given string
-def strip_prefixes(fullpaths_lst,split_on="store"):
+def strip_prefixes(fullpaths_lst,split_on="VBSVVH_skim_"):
     out_lst =[]
     for fullpath in fullpaths_lst:
         before,after = fullpath.split(split_on)
@@ -146,30 +135,55 @@ def strip_prefixes(fullpaths_lst,split_on="store"):
     return [before, out_lst]
 
 
+# Rebuild the runs_summary dict for one skim file from its Runs tree. The skimmer's
+# runs_summary_N.json is only a cache of the Runs tree of output_N.root, so the two agree
+# exactly; this is the fallback when the json cannot be read.
+def runs_summary_from_root(root_fpath):
+    with uproot.open(root_fpath) as f:
+        runs = f["Runs"]
+        out_dict = {"eventCount": float(f["Events"].num_entries)}
+        for branch in ["genEventCount", "genEventSumw", "genEventSumw2"]:
+            out_dict[branch] = float(runs[branch].array(library="np").sum())
+        for branch in ["LHEScaleSumw", "LHEPdfSumw", "PSSumw"]:
+            if branch in runs:
+                out_dict[branch] = [float(x) for x in np.sum(runs[branch].array(library="np"), axis=0)]
+    return out_dict
+
+
 # Sum the runs_summary jsons (produced by the skimmer) for all the files in this dataset
+#     - If a json cannot be read, fall back to the Runs tree of the matching root file.
+#     - If that fails too, abort: a missing file would silently shrink sumw while its
+#       events stay in the file list, i.e. the whole sample would be overweighted.
 def sum_runs_summaries(lst_of_file_metadata_jsons,dataset_fullpath):
     out_dict = {}
     for file_metadata_json in lst_of_file_metadata_jsons:
         fpath = os.path.join(dataset_fullpath,file_metadata_json)
-        if not os.access(fpath, os.R_OK):
-            print(f"  WARNING: skipping unreadable file {fpath}")
-            continue
-        with open(fpath) as jf:
-            file_metadata_dict = json.load(jf)
-            # Sum the values in the dict
-            # Assumes all keys are the same
-            # Assumes all vals are either float or list of floats
-            for k,v in file_metadata_dict.items():
-                if k not in out_dict:
-                    out_dict[k] = v
+        if os.access(fpath, os.R_OK):
+            with open(fpath) as jf:
+                file_metadata_dict = json.load(jf)
+        else:
+            root_fpath = fpath.replace("runs_summary_", "output_").replace(".json", ".root")
+            print(f"  WARNING: cannot read {fpath}, reading the Runs tree of {os.path.basename(root_fpath)} instead")
+            try:
+                file_metadata_dict = runs_summary_from_root(root_fpath)
+            except Exception as e:
+                raise Exception(f"Cannot get the sum of weights for {fpath}: the json is unreadable "
+                                f"and reading {root_fpath} failed ({e}). Refusing to write a json with "
+                                f"an incomplete sumw.") from e
+        # Sum the values in the dict
+        # Assumes all keys are the same
+        # Assumes all vals are either float or list of floats
+        for k,v in file_metadata_dict.items():
+            if k not in out_dict:
+                out_dict[k] = v
+            else:
+                # If this is a list, sum with the list we have
+                if isinstance(v, list):
+                    summed_arr = np.array(out_dict[k]) + np.array(v)
+                    out_dict[k] = list(summed_arr)
+                # Otherwise assume this is just a number
                 else:
-                    # If this is a list, sum with the list we have
-                    if isinstance(v, list):
-                        summed_arr = np.array(out_dict[k]) + np.array(v)
-                        out_dict[k] = list(summed_arr)
-                    # Otherwise assume this is just a number
-                    else:
-                        out_dict[k] += float(v)
+                    out_dict[k] += float(v)
     return out_dict
 
 
@@ -209,6 +223,12 @@ def make_json_for_dataset(dataset_info, path, kind, xsec_dict, skim_set_name, ru
         dataset_name_short, xsec_val = dataset_name, 1.0
     else:
         dataset_name_short, xsec_val = match_xsec(dataset_name,xsec_dict)
+        # Refuse to write a json whose xsec is still a placeholder. Catching it here
+        # names the sample and stops before submission; letting it through would
+        # produce a production that finishes with every yield scaled wrong.
+        if isinstance(xsec_val, xsec_ref.UnsetXsec):
+            raise Exception(f"No xsec is set for sample \"{dataset_name}\" (xsec_ref key "
+                            f"\"{dataset_name_short}\"). Fill in the value in etc/xsec_ref.py.")
 
     # Get full paths to all root and json files for this dataset
     dataset_fullpath = os.path.join(path,dataset_name)
@@ -235,7 +255,9 @@ def make_json_for_dataset(dataset_info, path, kind, xsec_dict, skim_set_name, ru
     metadata_dict = {}
     metadata_dict["kind"] = kind
     metadata_dict["year"] = year
-    metadata_dict["xsec"] = xsec_val
+    # float() on purpose: an integral xsec would serialise as a bare int and RDF
+    # rejects it ("Metadata value found at key 'xsec' is not of type double").
+    metadata_dict["xsec"] = float(xsec_val)
     metadata_dict["lumi"] = lumi
     metadata_dict["shortname"] = name_for_metadata
     metadata_dict["do_ewk_corr"] = do_ewk_corr
@@ -252,11 +274,11 @@ def make_json_for_dataset(dataset_info, path, kind, xsec_dict, skim_set_name, ru
     out_dict["files"] = file_fullpath_lst
     out_dict["metadata"] = metadata_dict
 
-    # Dump the dict to an output json (split by run so Run 2 and Run 3 JSONs never co-locate)
-    out_dir = f"input_sample_jsons/{run_tag}/{kind}/{skim_set_name}"
-    os.makedirs(out_dir, exist_ok=True)
-    with open(f"{out_dir}/{year}_{dataset_name_short}.json", "w") as fp:
-        json.dump({"samples": {dataset_name: out_dict}}, fp, indent=4)
+    # Return the output path and content; main() writes them once the whole skim set has
+    # been processed, so an abort part-way through never leaves a skim set half updated.
+    # (Split by run so Run 2 and Run 3 JSONs never co-locate.)
+    out_path = f"input_sample_jsons/{run_tag}/{kind}/{skim_set_name}/{year}_{dataset_name_short}.json"
+    return out_path, {"samples": {dataset_name: out_dict}}
 
 
 
@@ -269,6 +291,9 @@ def main():
     for skim_set_name in SKIM_PATH_DICT:
         print(f"\n################## Skim set: {skim_set_name} ##################")
         #if skim_set_name not in ["0lep_1FJ", "0lep_2FJ"]: continue
+
+        # Jsons for this skim set, written only once every dataset in it has succeeded
+        jsons_to_write = []
 
         # Loop over the kinds of samples for each skim (e.g., bkg)
         for run_tag,kind in SKIM_PATH_DICT[skim_set_name]:
@@ -305,6 +330,9 @@ def main():
                     if skim_set_name == "1lep_1FJ" and ds_dict["dataset_name"].startswith("MuonEG"): continue
                     if skim_set_name == "1lep_1FJ" and ds_dict["dataset_name"].startswith("DoubleMuon"): continue
                     if skim_set_name == "1lep_1FJ" and ds_dict["dataset_name"].startswith("DoubleEG"): continue
+                    # Samples superseded by another description of the same process, see
+                    # datasets_excluded in dataset_names_ref.py. Skipped for every channel.
+                    if dataset_names_ref.is_excluded(ds_dict["dataset_name"]): continue
                     # Otherwise append to the list we want to make jsons for
                     datasets_lst.append(ds_dict)
 
@@ -313,8 +341,15 @@ def main():
             for i,dataset_info in enumerate(datasets_lst):
                 print(f"{i+1}/{len(datasets_lst)}: {dataset_info['dataset_name']}")
 
-                # Make the output json
-                make_json_for_dataset(dataset_info, path_to_skims, kind, xsec_dict, skim_set_name, run_tag)
+                # Build the output json
+                jsons_to_write.append(make_json_for_dataset(dataset_info, path_to_skims, kind, xsec_dict, skim_set_name, run_tag))
+
+        # This skim set is complete: write all of its jsons
+        print(f"\nWriting {len(jsons_to_write)} jsons for skim set {skim_set_name}")
+        for out_path, content in jsons_to_write:
+            os.makedirs(os.path.dirname(out_path), exist_ok=True)
+            with open(out_path, "w") as fp:
+                json.dump(content, fp, indent=4)
 
 
 
