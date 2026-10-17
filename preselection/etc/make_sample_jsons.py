@@ -71,7 +71,7 @@ SKIM_PATH_DICT = {
         ("run2", "bkg")  : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run2_Bkg_v15_v30_4Lep",
         ("run2", "data") : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run2_Data_v15_v30_4Lep",
         ("run3", "bkg")  : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run3_Bkg_v15_v30_4Lep",
-        ("run3", "data") : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run3_Data_v15_v30_4Lep",
+        ("run3", "data") : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v43/Run3_Data_v15_v43_4Lep",
     },
 }
 
@@ -245,9 +245,9 @@ def make_json_for_dataset(dataset_info, path, kind, xsec_dict, skim_set_name, ru
     # What name to include for the metadata
     if kind == "data":
         name_for_metadata = dataset_name_short.split("_")[0] # For data just keep e.g. "DoubleEG"
-        if name_for_metadata.endswith("0") or name_for_metadata.endswith("1") or name_for_metadata.endswith("2") or name_for_metadata.endswith("3"):
-            # Run 3 dataset names include e.g. Muon, Muon0, Muon1
-            name_for_metadata = name_for_metadata[:-1]
+        if name_for_metadata[-1:].isdigit():
+            # Run 3 dataset names include e.g. Muon, Muon0, Muon1, etc.
+            name_for_metadata = name_for_metadata.rstrip("0123456789")
     else: name_for_metadata = dataset_name_short
 
     # Get the sum of weights for all of the files in this dataset and build metadata dict
@@ -291,6 +291,7 @@ def main():
     for skim_set_name in SKIM_PATH_DICT:
         print(f"\n################## Skim set: {skim_set_name} ##################")
         #if skim_set_name not in ["0lep_1FJ", "0lep_2FJ"]: continue
+        if skim_set_name not in ["4lep"]: continue
 
         # Jsons for this skim set, written only once every dataset in it has succeeded
         jsons_to_write = []
