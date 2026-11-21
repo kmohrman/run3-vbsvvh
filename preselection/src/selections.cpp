@@ -455,7 +455,7 @@ RNode runPreselection(RNode df_, std::string channel, bool noCut, bool isData, s
 
     // Do the ak4 jet selection
     df = AK4JetProperties(df);
-    df = AK4JetsSelection(df, /*cleanAgainstFJ=*/true, "jet");
+    df = AK4JetsSelection(df, /*cleanAgainstFJ=*/ channel != "zzz", "jet"); // No FJ overlap removal for ZZZ
     df = AK4JetsSelection(df, /*cleanAgainstFJ=*/false, "jetNoFJClean");
 
     // Get ahold of the relevant lepton SFs (will choose which ones to actually apply in each channel)
