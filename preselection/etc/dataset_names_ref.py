@@ -192,7 +192,7 @@ datasets = {
         {"year": "2016preVFP", "dataset_name": "ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8_RunIISummer20UL16NanoAODAPVv15-150X_mcRun2_asymptotic_preVFP_v1-v1_NANOAODSIM"},
         {"year": "2016preVFP", "dataset_name": "ttHTobb_M125_TuneCP5_13TeV-powheg-pythia8_RunIISummer20UL16NanoAODAPVv15-150X_mcRun2_asymptotic_preVFP_v1-v1_NANOAODSIM"},
         {"year": "2016preVFP", "dataset_name": "ZZTo4L_TuneCP5_13TeV_powheg_pythia8_RunIISummer20UL16NanoAODAPVv15-150X_mcRun2_asymptotic_preVFP_v1-v1_NANOAODSIM"},
-
+        {"year": "2016preVFP", "dataset_name": "ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_RunIISummer20UL16NanoAODAPVv15-150X_mcRun2_asymptotic_preVFP_v1-v1_NANOAODSIM"},
         # Z(->nunu)+jets, HT-binned (NanoAODv15). Bin edges differ between Run 2 and 2024;
         # the two sets are not bin-for-bin comparable. No HT<100 sample exists in any era.
         {"year": "2016preVFP", "dataset_name": "ZJetsToNuNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8_RunIISummer20UL16NanoAODAPVv15-150X_mcRun2_asymptotic_preVFP_v1-v2_NANOAODSIM"},
@@ -313,6 +313,7 @@ datasets = {
         {"year": "2016postVFP", "dataset_name": "ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8_RunIISummer20UL16NanoAODv15-150X_mcRun2_asymptotic_v1-v1_NANOAODSIM"},
         {"year": "2016postVFP", "dataset_name": "ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8_RunIISummer20UL16NanoAODv15-150X_mcRun2_asymptotic_v1-v1_NANOAODSIM"},
         {"year": "2016postVFP", "dataset_name": "ZZTo4L_TuneCP5_13TeV_powheg_pythia8_RunIISummer20UL16NanoAODv15-150X_mcRun2_asymptotic_v1-v2_NANOAODSIM"},
+        {"year": "2016postVFP", "dataset_name": "ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_RunIISummer20UL16NanoAODv15-150X_mcRun2_asymptotic_v1-v1_NANOAODSIM"},
 
         # Z(->nunu)+jets, HT-binned (NanoAODv15). Bin edges differ between Run 2 and 2024;
         # the two sets are not bin-for-bin comparable. No HT<100 sample exists in any era.
@@ -433,7 +434,7 @@ datasets = {
         {"year": "2017", "dataset_name": "ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8_RunIISummer20UL17NanoAODv15-150X_mc2017_realistic_v1-v1_NANOAODSIM"},
         {"year": "2017", "dataset_name": "ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8_RunIISummer20UL17NanoAODv15-150X_mc2017_realistic_v1-v1_NANOAODSIM"},
         {"year": "2017", "dataset_name": "ZZTo4L_TuneCP5_13TeV_powheg_pythia8_RunIISummer20UL17NanoAODv15-150X_mc2017_realistic_v1-v1_NANOAODSIM"},
-
+        {"year": "2017", "dataset_name": "ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_RunIISummer20UL17NanoAODv15-150X_mc2017_realistic_v1-v1_NANOAODSIM"},
         # Z(->nunu)+jets, HT-binned (NanoAODv15). Bin edges differ between Run 2 and 2024;
         # the two sets are not bin-for-bin comparable. No HT<100 sample exists in any era.
         {"year": "2017", "dataset_name": "ZJetsToNuNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8_RunIISummer20UL17NanoAODv15-150X_mc2017_realistic_v1-v2_NANOAODSIM"},
@@ -551,7 +552,7 @@ datasets = {
         {"year": "2018", "dataset_name": "ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8_RunIISummer20UL18NanoAODv15-150X_mc2018_realistic_v1-v1_NANOAODSIM"},
         {"year": "2018", "dataset_name": "ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8_RunIISummer20UL18NanoAODv15-150X_mc2018_realistic_v1-v1_NANOAODSIM"},
         {"year": "2018", "dataset_name": "ZZTo4L_TuneCP5_13TeV_powheg_pythia8_RunIISummer20UL18NanoAODv15-150X_mc2018_realistic_v1-v1_NANOAODSIM"},
-
+        {"year": "2018", "dataset_name": "ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV_powheg2-minlo-HZJ_JHUGenV7011_pythia8_RunIISummer20UL18NanoAODv15-150X_mc2018_realistic_v1-v1_NANOAODSIM"},
         # Z(->nunu)+jets, HT-binned (NanoAODv15). Bin edges differ between Run 2 and 2024;
         # the two sets are not bin-for-bin comparable. No HT<100 sample exists in any era.
         {"year": "2018", "dataset_name": "ZJetsToNuNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8_RunIISummer20UL18NanoAODv15-150X_mc2018_realistic_v1-v1_NANOAODSIM"},

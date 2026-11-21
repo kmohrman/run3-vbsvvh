@@ -71,7 +71,7 @@ SKIM_PATH_DICT = {
         ("run2", "bkg")  : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run2_Bkg_v15_v30_4Lep",
         ("run2", "data") : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run2_Data_v15_v30_4Lep",
         ("run3", "bkg")  : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run3_Bkg_v15_v30_4Lep",
-        ("run3", "data") : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v43/Run3_Data_v15_v43_4Lep",
+        ("run3", "data") : "/cmsuf/data/store/user/phchang/skim/VBSVVH_skim_v30/Run3_Data_v15_v30_4Lep",
     },
 }
 

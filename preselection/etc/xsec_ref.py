@@ -408,6 +408,11 @@ xsec_dict = {
 
                 
         "bkg": {
+
+            # qq ZH from https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYellowReportPageAt13TeV#ZH_Process
+            # With H->ZZ BR of 0.0264, and nlep>=4 filter eff of 3*0.101*0.101*(1-0.101) + 0.101**3
+            "ZH_HToZZ_4LFilter_M125_TuneCP5_13TeV": 0.000574,
+
             # V+jets HT-binned, LO. GenXSecAnalyzer over the complete datasets via CRAB
             # (Maria Mazza 2026-09-16). Quoted to 4 s.f.: the GenXSecAnalyzer statistical
             # error is ~0.03%, but the production-to-production scatter dominates at ~0.5% (median 0.22%, max 0.83%). 
