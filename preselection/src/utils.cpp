@@ -474,6 +474,18 @@ void saveSnapshot(RNode df, const std::string &outputDir, const std::string &out
         }
     }
 
+    // ZZZ: carry through the photon / isolated-track / trigger-object collections added by
+    // the v54 skim. Like Jet_*/FatJet_* above these are raw NanoAOD branches rather than
+    // defined columns, so they must be requested by name. The n* count branches are written
+    // automatically by Snapshot and must NOT be listed here.
+    for (auto &&col : allColNames) {
+        if ((col.starts_with("Photon_") || col.starts_with("IsoTrack_") ||
+             col.starts_with("TrigObj_")) &&
+            std::find(final_variables.begin(), final_variables.end(), col) == final_variables.end()) {
+            final_variables.push_back(col);
+        }
+    }
+
     // Optionally store HLT branches from input NanoAOD, providing default values
     // for branches that may not exist in all files of a multi-file chain
     if (storeHLT) {
