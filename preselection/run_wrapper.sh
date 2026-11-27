@@ -11,7 +11,8 @@
 # it on the line below; the expansion aborts the script if unset.
 CERN_USER="${CERN_USER:?Please set CERN_USER to your T2 username}"
 PREFIX="/cmsuf/data/store/user/phchang/skim/"
-OUT_DIR="/cmsuf/data/store/user/$CERN_USER/vbs_vvh_rdf"
+#OUT_DIR="/cmsuf/data/store/user/$CERN_USER/vbs_vvh_rdf"
+OUT_DIR="/cmsuf/data/store/user/kmohrman/vbs_vvh_rdf/zzz_nov27_ref/"
 
 # HPG blue (recurring space issues — uncomment only when needed)
 #OUT_DIR="/blue/avery/$USER/samples/run3-vbsvvh"
@@ -41,6 +42,7 @@ echo "Batch mode: $MODE"
 # ---- Examples of local runs for testing (uncomment one; skip the batch block below) ----
 #python3 run_rdf.py -i etc/input_sample_jsons/run2/sig/all_events/2017_VBSWZH_c2v1p0_c3_1p0.json -p $PREFIX -o $OUT_DIR -n test -c 3lep      -m local -r 2 -j 16
 #python3 run_rdf.py -i etc/input_sample_jsons/run2/sig/all_events/                              -p $PREFIX -o $OUT_DIR -n r2sigSM -c 2lep_1FJ -m local -r 2 -j 16
+#python3 run_rdf.py -i etc/input_sample_jsons/run3/bkg/4lepZZZ/2025_ZZZ-5F_TuneCP5_13p6TeV.json -p $PREFIX -o $OUT_DIR -n test -c zzz -m local -r 3 -j 16 # ZZZ
 #exit 0
 
 # ---- Batch submission: signal + per-channel bkg/data, for Run 2 and Run 3 ----
@@ -58,7 +60,8 @@ CHANNELS=(0lep_1FJ 0lep_2FJ)
 # Set SYSTS="" for a fully nominal pass.
 SYSTS="${SYSTS---systs}"
 
-for RUN in 2 3; do
+#for RUN in 2 3; do
+for RUN in 3; do
     RUN_BASE="etc/input_sample_jsons/run${RUN}"
 
     # Signal through the all_events pass-through channel, i.e. no analysis selection
@@ -73,6 +76,6 @@ for RUN in 2 3; do
     #python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "${CHANNELS[@]}" -m $MODE -r $RUN -f 1 --kinds bkg
 
     # For ZZZ
-    python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "zzz" -m $MODE -r $RUN -f 2 --kinds bkg data
+    python3 run_rdf.py -p $PREFIX -o $OUT_DIR -n r${RUN} -c "zzz" -m $MODE -r $RUN -f 4 --kinds bkg data --qos avery-b
 
 done
