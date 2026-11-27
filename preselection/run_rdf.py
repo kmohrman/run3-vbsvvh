@@ -20,7 +20,7 @@ ANA_CHANNELS = {
         "2lep_2FJ"     : "2lep_2FJ",
         "3lep"         : "3lep",
         "4lep"         : "4lep",
-        "zzz"          : "4lep",
+        "zzz"          : "4lepZZZ",
 }
 # Calibration / measurement regions that RDF knows how to run but that are NOT part of
 # the analysis. Unlike the analysis channels, these are not mutually orthogonal -- they
