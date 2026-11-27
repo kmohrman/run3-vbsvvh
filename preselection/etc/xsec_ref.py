@@ -90,6 +90,8 @@ xsec_dict = {
             "Zto2Nu-4Jets_Bin-HT-1500to2500_TuneCP5_13p6TeV" : 0.09839,
             "Zto2Nu-4Jets_Bin-HT-2500_TuneCP5_13p6TeV"       : 0.006699, 
 
+            # From XSDB
+
                 # 22/23 sample names - xs same as above
             "Zto2Nu-4Jets_HT-100to200_TuneCP5_13p6TeV"   : 273.4,
             "Zto2Nu-4Jets_HT-200to400_TuneCP5_13p6TeV"   : 76.09,

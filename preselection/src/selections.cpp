@@ -455,7 +455,7 @@ RNode runPreselection(RNode df_, std::string channel, bool noCut, bool isData, s
 
     // Do the ak4 jet selection
     df = AK4JetProperties(df);
-    df = AK4JetsSelection(df, /*cleanAgainstFJ=*/true, "jet");
+    df = AK4JetsSelection(df, /*cleanAgainstFJ=*/ channel != "zzz", "jet"); // No FJ overlap removal for ZZZ
     df = AK4JetsSelection(df, /*cleanAgainstFJ=*/false, "jetNoFJClean");
 
     // Get ahold of the relevant lepton SFs (will choose which ones to actually apply in each channel)
@@ -836,6 +836,22 @@ RNode runPreselection(RNode df_, std::string channel, bool noCut, bool isData, s
 
         // Channel orthogonality selection
         df = df.Filter("(nLep_Sel == 4)", "C2: 4lep");
+
+    }
+
+    // zzz
+    else if (channel == "zzz"){
+
+        df = TriggerSelections(df,trigger_logic_string_multilep);
+        Cutflow::Add(df, "C1: Trigger selection");
+
+        df = lepSFWrapper(df, isData, /*ele_sf_name=*/ "_weight_electron_recoall_mixedid", /*muo_sf_name=*/ "_weight_muon_looseid_looseiso");
+
+        // At least four  leptons
+        df = df.Filter("((nElectron_Veto + nMuon_Loose) >= 4)", "C2: 4lep");
+
+        // And at least four of these must be loose
+        df = df.Filter("((nElectron_Loose + nMuon_Loose) >= 4)", "C3: 4lep loose");
 
     }
 
